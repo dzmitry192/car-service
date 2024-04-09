@@ -1,4 +1,4 @@
-package com.innowise.sivachenko.carservice;
+package com.innowise.sivachenko;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
