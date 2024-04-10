@@ -6,6 +6,7 @@ import com.innowise.sivachenko.model.dto.response.CarDto;
 import com.innowise.sivachenko.model.enums.CarBodyType;
 import com.innowise.sivachenko.model.enums.EngineType;
 import com.innowise.sivachenko.model.enums.TransmissionType;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -24,11 +25,11 @@ public interface CarService {
             Pageable pageable
     );
 
-    CarDto getCarById(Long id);
+    CarDto getCarById(Long id) throws EntityNotFoundException;
 
     CarDto createCar(CreateCarDto createCarDto);
 
-    CarDto updateCar(Long id, UpdateCarDto updateCarDto);
+    CarDto updateCar(Long id, UpdateCarDto updateCarDto) throws EntityNotFoundException;
 
     CarDto deleteCar(Long id);
 }
