@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -69,6 +70,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    @Transactional
     public CarDto updateCar(Long id, UpdateCarDto updateCarDto) throws EntityNotFoundException {
         Optional<CarEntity> optionalCar = carRepository.findById(id);
         if (optionalCar.isEmpty()) {

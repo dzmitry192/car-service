@@ -19,7 +19,12 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final static String[] WHITE_LIST = {
-            "/actuator/**"
+            "/actuator/**",
+            "/webjars/**",
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/v3/api-docs/**",
+            "/car-service/v3/api-docs/**"
     };
 
     @Value(value = "${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
