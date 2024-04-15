@@ -15,7 +15,7 @@ public class CarEntitySpecification {
     }
 
     public static Specification<CarEntity> withYearOfCar(Integer yearOfCar) {
-        return (car, query, builder) -> yearOfCar != null ? builder.equal(car.get("year_of_car"), yearOfCar) : null;
+        return (car, query, builder) -> yearOfCar != null ? builder.equal(car.get("yearOfCar"), yearOfCar) : null;
     }
 
     public static Specification<CarEntity> withHorsepower(Integer horsepower) {
@@ -23,7 +23,7 @@ public class CarEntitySpecification {
     }
 
     public static Specification<CarEntity> withEngineCapacity(Float engineCapacity) {
-        return (car, query, builder) -> engineCapacity != null ? builder.equal(car.get("engine_capacity"), engineCapacity) : null;
+        return (car, query, builder) -> engineCapacity != null ? builder.equal(car.get("engineCapacity"), engineCapacity) : null;
     }
 
     public static Specification<CarEntity> withSeats(Short seats) {
@@ -35,18 +35,18 @@ public class CarEntitySpecification {
     }
 
     public static Specification<CarEntity> withCarMake(String carMake) {
-        return (car, query, builder) -> carMake != null ? builder.equal(car.get("car_make"), carMake) : null;
+        return (car, query, builder) -> carMake != null ? builder.equal(car.get("carMake"), carMake) : null;
     }
 
     public static Specification<CarEntity> withEngineType(EngineType engineType) {
-        return (car, query, builder) -> engineType != null ? builder.equal(car.get("engine_type"), engineType) : null;
+        return (car, query, builder) -> engineType != null ? builder.equal(car.get("engineType"), engineType) : null;
     }
 
     public static Specification<CarEntity> withBodyType(CarBodyType bodyType) {
-        return (car, query, builder) -> bodyType != null ? builder.equal(car.get("body_type"), bodyType) : null;
+        return (car, query, builder) -> bodyType != null ? builder.equal(car.get("bodyType"), bodyType) : null;
     }
 
     public static Specification<CarEntity> withTransmissionType(TransmissionType transmissionType) {
-        return (car, query, builder) -> transmissionType != null ? builder.equal(car.get("transmission_type"), transmissionType) : null;
+        return (car, query, builder) -> transmissionType != null ? builder.equal(car.get("transmissionType"), transmissionType) : null;
     }
 }
