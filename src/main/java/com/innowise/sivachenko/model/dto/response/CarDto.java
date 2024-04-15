@@ -13,6 +13,7 @@ public record CarDto(
         Short seats,
         String color,
         String carMake,
+        Long priceDay,
         Long usedByClientId,
         EngineType engineType,
         CarBodyType bodyType,
