@@ -21,6 +21,7 @@ public interface CarService {
             Short seats,
             String color,
             String carMake,
+            Long priceDay,
             EngineType engineType,
             CarBodyType bodyType,
             TransmissionType transmissionType,

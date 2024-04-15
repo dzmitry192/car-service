@@ -34,9 +34,9 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Page<CarDto> getCars(String name, Integer yearOfCar, Integer horsepower, Float engineCapacity, Short seats,
-                                String color, String carMake, EngineType engineType, CarBodyType bodyType,
+                                String color, String carMake, Long priceDay, EngineType engineType, CarBodyType bodyType,
                                 TransmissionType transmissionType, Pageable pageable) throws BadArgumentException {
-        ValidationUtils.isValidParams(name, yearOfCar, horsepower, engineCapacity, seats, color, carMake);
+        ValidationUtils.isValidParams(name, yearOfCar, horsepower, engineCapacity, seats, color, carMake, priceDay);
         return carRepository.findAll(Specification.where(
                         CarEntitySpecification.withName(name)
                                 .and(withYearOfCar(yearOfCar))
@@ -45,6 +45,7 @@ public class CarServiceImpl implements CarService {
                                 .and(withSeats(seats))
                                 .and(withColor(color))
                                 .and(withCarMake(carMake))
+                                .and(withPriceDay(priceDay))
                                 .and(withEngineType(engineType))
                                 .and(withBodyType(bodyType))
                                 .and(withTransmissionType(transmissionType))

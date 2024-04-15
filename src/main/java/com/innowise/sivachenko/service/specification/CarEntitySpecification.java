@@ -38,6 +38,10 @@ public class CarEntitySpecification {
         return (car, query, builder) -> carMake != null ? builder.equal(car.get("carMake"), carMake) : null;
     }
 
+    public static Specification<CarEntity> withPriceDay(Long priceDay) {
+        return (car, query, builder) -> priceDay != null ? builder.equal(car.get("priceDay"), priceDay) : null;
+    }
+
     public static Specification<CarEntity> withEngineType(EngineType engineType) {
         return (car, query, builder) -> engineType != null ? builder.equal(car.get("engineType"), engineType) : null;
     }

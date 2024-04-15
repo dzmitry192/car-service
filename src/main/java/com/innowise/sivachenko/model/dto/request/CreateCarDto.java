@@ -15,18 +15,18 @@ public record CreateCarDto(
         String name,
         @ValidYear
         Integer yearOfCar,
-        @NotNull
-        @Min(1)
+        @NotNull @Min(1)
         Integer horsepower,
         @ValidEngineCapacity
         Float engineCapacity,
-        @NotNull
-        @Min(1)
+        @NotNull @Min(1)
         Short seats,
         @Pattern(regexp = "^[a-zA-Zа-яА-Я]*$")
         String color,
         @Pattern(regexp = "^[a-zA-Zа-яА-Я]*$")
         String carMake,
+        @NotNull @Min(1)
+        Long priceDay,
         @NotNull
         EngineType engineType,
         @NotNull

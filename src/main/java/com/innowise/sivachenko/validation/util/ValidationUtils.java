@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class ValidationUtils {
 
-    public static void isValidParams(String name, Integer year, Integer horsepower, Float engineCapacity, Short seats, String color, String carMake) throws BadArgumentException {
+    public static void isValidParams(String name, Integer year, Integer horsepower, Float engineCapacity, Short seats, String color, String carMake, Long priceDay) throws BadArgumentException {
         isValidName(name);
         isValidYear(year);
         isValidHorsepower(horsepower);
@@ -14,6 +14,7 @@ public class ValidationUtils {
         isValidSeats(seats);
         isValidColor(color);
         isValidCarMake(carMake);
+        isValidPriceDay(priceDay);
     }
 
     public static void isValidName(String name) throws BadArgumentException {
@@ -61,6 +62,12 @@ public class ValidationUtils {
             if (!(carMake.matches("^$|[a-zA-Zа-яА-Я0-9]*"))) {
                 throw new BadArgumentException(String.format("Invalid value {%s} in field {%s}", carMake, "carMake"));
             }
+        }
+    }
+
+    public static void isValidPriceDay(Long priceDay) throws BadArgumentException {
+        if (!(priceDay == null || priceDay > 0)) {
+            throw new BadArgumentException(String.format("Invalid value {%s} in field {%s}", priceDay, "priceDay"));
         }
     }
 

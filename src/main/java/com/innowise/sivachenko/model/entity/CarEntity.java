@@ -4,6 +4,7 @@ import com.innowise.sivachenko.model.enums.CarBodyType;
 import com.innowise.sivachenko.model.enums.EngineType;
 import com.innowise.sivachenko.model.enums.TransmissionType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -53,6 +54,11 @@ public class CarEntity {
 
     @Column(name = "used_by")
     private Long usedByClientId;
+
+    @NotNull
+    @Min(1)
+    @Column(name = "price_day")
+    private Long priceDay;
 
     @NotNull
     @Enumerated(value = EnumType.ORDINAL)

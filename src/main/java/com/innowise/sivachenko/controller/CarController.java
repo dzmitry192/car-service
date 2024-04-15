@@ -23,13 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Year;
-import java.util.Date;
 
 @RestController
 @RequestMapping("/api/v1/car-service")
@@ -42,7 +36,7 @@ public class CarController {
             summary = "Get page of cars with query params"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Success", content = { @Content(schema = @Schema(implementation = Page.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "200", description = "Success", content = {@Content(schema = @Schema(implementation = Page.class), mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Server Error", content = {@Content(mediaType = "application/json")})
     })
     @Parameters({
@@ -53,6 +47,7 @@ public class CarController {
             @Parameter(name = "seats", description = "Number of seats"),
             @Parameter(name = "color", description = "Color of the car"),
             @Parameter(name = "carMake", description = "The car make"),
+            @Parameter(name = "priceDay", description = "Price per day of rent"),
             @Parameter(name = "engineType", description = "The type of engine"),
             @Parameter(name = "bodyType", description = "The type of car's body"),
             @Parameter(name = "transmissionType", description = "The type of car's transmission"),
@@ -64,25 +59,26 @@ public class CarController {
     public ResponseEntity<Page<CarDto>> getCars(
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "yearOfCar", required = false) Integer yearOfCar,
-            @RequestParam(name = "horsepower", required = false)  Integer horsepower,
+            @RequestParam(name = "horsepower", required = false) Integer horsepower,
             @RequestParam(name = "engineCapacity", required = false) Float engineCapacity,
             @RequestParam(name = "seats", required = false) Short seats,
-            @RequestParam(name = "color", required = false)  String color,
-            @RequestParam(name = "carMake", required = false)  String carMake,
+            @RequestParam(name = "color", required = false) String color,
+            @RequestParam(name = "carMake", required = false) String carMake,
+            @RequestParam(name = "priceDay", required = false) Long priceDay,
             @RequestParam(name = "engineType", required = false) EngineType engineType,
             @RequestParam(name = "bodyType", required = false) CarBodyType bodyType,
             @RequestParam(name = "transmissionType", required = false) TransmissionType transmissionType,
             @RequestParam(name = "page", required = false, defaultValue = "0") @Min(0) Integer page,
             @RequestParam(name = "size", required = false, defaultValue = "10") @Min(1) @Max(100) Integer size
     ) throws BadArgumentException {
-        return ResponseEntity.ok(carService.getCars(name, yearOfCar, horsepower, engineCapacity, seats, color, carMake, engineType, bodyType, transmissionType, PageRequest.of(page, size)));
+        return ResponseEntity.ok(carService.getCars(name, yearOfCar, horsepower, engineCapacity, seats, color, carMake, priceDay, engineType, bodyType, transmissionType, PageRequest.of(page, size)));
     }
 
     @Operation(
             summary = "Get car by id"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Success", content = { @Content(schema = @Schema(implementation = Page.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "200", description = "Success", content = {@Content(schema = @Schema(implementation = Page.class), mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Server Error", content = {@Content(mediaType = "application/json")})
     })
     @Parameter(name = "carId", description = "Car id that you want to get")
@@ -96,7 +92,7 @@ public class CarController {
             summary = "Create car"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Success", content = { @Content(schema = @Schema(implementation = Page.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "200", description = "Success", content = {@Content(schema = @Schema(implementation = Page.class), mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Server Error", content = {@Content(mediaType = "application/json")})
     })
     @PostMapping("/")
@@ -109,7 +105,7 @@ public class CarController {
             summary = "Update car info"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Success", content = { @Content(schema = @Schema(implementation = Page.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "200", description = "Success", content = {@Content(schema = @Schema(implementation = Page.class), mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Server Error", content = {@Content(mediaType = "application/json")})
     })
     @Parameter(name = "carId", description = "Car id that you want to update")
@@ -124,7 +120,7 @@ public class CarController {
             summary = "Update car info"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Success", content = { @Content(schema = @Schema(implementation = Page.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "200", description = "Success", content = {@Content(schema = @Schema(implementation = Page.class), mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Server Error", content = {@Content(mediaType = "application/json")})
     })
     @Parameter(name = "carId", description = "Car id that you want to delete")
