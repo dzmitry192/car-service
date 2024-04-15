@@ -6,8 +6,11 @@ import com.innowise.sivachenko.model.dto.response.CarDto;
 import com.innowise.sivachenko.model.enums.CarBodyType;
 import com.innowise.sivachenko.model.enums.EngineType;
 import com.innowise.sivachenko.model.enums.TransmissionType;
+import com.innowise.sivachenko.model.exception.BadArgumentException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 public interface CarService {
     Page<CarDto> getCars(
@@ -22,13 +25,13 @@ public interface CarService {
             CarBodyType bodyType,
             TransmissionType transmissionType,
             Pageable pageable
-    );
+    ) throws MethodArgumentNotValidException, BadArgumentException;
 
-    CarDto getCarById(Long id);
+    CarDto getCarById(Long id) throws EntityNotFoundException;
 
     CarDto createCar(CreateCarDto createCarDto);
 
-    CarDto updateCar(Long id, UpdateCarDto updateCarDto);
+    CarDto updateCar(Long id, UpdateCarDto updateCarDto) throws EntityNotFoundException;
 
     CarDto deleteCar(Long id);
 }
