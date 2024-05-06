@@ -11,7 +11,7 @@ import java.util.Arrays;
 @Aspect
 public class LoggingAspect {
 
-    @Pointcut("execution(* com.innowise.sivachenko.service.CarServiceImpl.*get*(..))")
+    @Pointcut("execution(* com.innowise.sivachenko.service.CarServiceImpl.*(..))")
     public void logGetMethods() {
     }
 

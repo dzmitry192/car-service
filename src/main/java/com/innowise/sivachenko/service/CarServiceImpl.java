@@ -9,6 +9,7 @@ import com.innowise.sivachenko.model.enums.CarBodyType;
 import com.innowise.sivachenko.model.enums.EngineType;
 import com.innowise.sivachenko.model.enums.TransmissionType;
 import com.innowise.sivachenko.model.exception.BadArgumentException;
+import com.innowise.sivachenko.model.exception.CarAlreadyInUseException;
 import com.innowise.sivachenko.repository.CarRepository;
 import com.innowise.sivachenko.service.api.CarService;
 import com.innowise.sivachenko.service.specification.CarEntitySpecification;
@@ -80,6 +81,23 @@ public class CarServiceImpl implements CarService {
         CarEntity newCar = carMapper.updateCarDtoToCarEntity(optionalCar.get(), updateCarDto);
 
         return carMapper.carEntityToCarDto(carRepository.save(newCar));
+    }
+
+    @Override
+    @Transactional
+    public CarDto updateCarRenter(Long carId, Long clientId) throws EntityNotFoundException, CarAlreadyInUseException {
+        Optional<CarEntity> optionalCar = carRepository.findById(carId);
+        if (optionalCar.isEmpty()) {
+            throw new EntityNotFoundException(String.format("Car with id {%s} not found", carId));
+        }
+        if (optionalCar.get().getUsedByClientId() != null) {
+            throw new CarAlreadyInUseException(String.format("Car with id {%s} is already in use", carId));
+        }
+
+        CarEntity car = optionalCar.get();
+        car.setUsedByClientId(clientId);
+
+        return carMapper.carEntityToCarDto(carRepository.save(car));
     }
 
     @Override

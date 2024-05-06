@@ -7,6 +7,7 @@ import com.innowise.sivachenko.model.enums.CarBodyType;
 import com.innowise.sivachenko.model.enums.EngineType;
 import com.innowise.sivachenko.model.enums.TransmissionType;
 import com.innowise.sivachenko.model.exception.BadArgumentException;
+import com.innowise.sivachenko.model.exception.CarAlreadyInUseException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,8 @@ public interface CarService {
     CarDto createCar(CreateCarDto createCarDto);
 
     CarDto updateCar(Long id, UpdateCarDto updateCarDto) throws EntityNotFoundException;
+
+    CarDto updateCarRenter(Long carId, Long clientId) throws EntityNotFoundException, CarAlreadyInUseException;
 
     CarDto deleteCar(Long id);
 }

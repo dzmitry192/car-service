@@ -7,6 +7,7 @@ import com.innowise.sivachenko.model.enums.CarBodyType;
 import com.innowise.sivachenko.model.enums.EngineType;
 import com.innowise.sivachenko.model.enums.TransmissionType;
 import com.innowise.sivachenko.model.exception.BadArgumentException;
+import com.innowise.sivachenko.model.exception.CarAlreadyInUseException;
 import com.innowise.sivachenko.service.CarServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -92,7 +93,7 @@ public class CarController {
             summary = "Create car"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Success", content = {@Content(schema = @Schema(implementation = Page.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "201", description = "Success", content = {@Content(schema = @Schema(implementation = Page.class), mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Server Error", content = {@Content(mediaType = "application/json")})
     })
     @PostMapping("/")
@@ -114,6 +115,13 @@ public class CarController {
     public ResponseEntity<CarDto> updateCarById(@PathVariable(name = "carId") Long carId,
                                                 @Valid UpdateCarDto updateCarDto) {
         return ResponseEntity.ok(carService.updateCar(carId, updateCarDto));
+    }
+
+    @PatchMapping("/{carId}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<CarDto> updateCarRenter(@PathVariable(name = "carId") Long carId,
+                                                  @RequestParam(name = "clientId") Long clientId) throws CarAlreadyInUseException {
+        return ResponseEntity.ok(carService.updateCarRenter(carId, clientId));
     }
 
     @Operation(
