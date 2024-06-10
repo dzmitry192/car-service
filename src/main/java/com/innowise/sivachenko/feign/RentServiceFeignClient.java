@@ -2,11 +2,11 @@ package com.innowise.sivachenko.feign;
 
 import com.innowise.sivachenko.feign.config.FeignConfig;
 import com.innowise.sivachenko.feign.fallback.RentServiceFallback;
+import com.innowise.sivachenko.model.exception.ServiceNotFoundException;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.management.ServiceNotFoundException;
 
 @FeignClient(name = "${feign.client.rent-service.name}", fallbackFactory = RentServiceFallback.class, configuration = FeignConfig.class)
 public interface RentServiceFeignClient {

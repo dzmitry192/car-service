@@ -1,11 +1,11 @@
 package com.innowise.sivachenko.feign.fallback;
 
 import com.innowise.sivachenko.feign.RentServiceFeignClient;
+import com.innowise.sivachenko.model.exception.ServiceNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
-import javax.management.ServiceNotFoundException;
 
 @Log4j2
 @Component

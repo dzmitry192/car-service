@@ -7,8 +7,8 @@ import com.innowise.sivachenko.model.enums.CarBodyType;
 import com.innowise.sivachenko.model.enums.EngineType;
 import com.innowise.sivachenko.model.enums.TransmissionType;
 import com.innowise.sivachenko.model.exception.BadArgumentException;
-import com.innowise.sivachenko.model.exception.CannotDeleteCarException;
 import com.innowise.sivachenko.model.exception.CarAlreadyInUseException;
+import com.innowise.sivachenko.model.exception.ServiceNotFoundException;
 import com.innowise.sivachenko.service.CarServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,7 +27,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.ServiceNotFoundException;
 
 @RestController
 @RequestMapping("/api/v1/car-service")
@@ -126,8 +125,9 @@ public class CarController {
     @PatchMapping("/{carId}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<CarDto> updateCarRenter(@PathVariable(name = "carId") Long carId,
-                                                  @RequestParam(name = "clientId") Long clientId) throws CarAlreadyInUseException {
-        return ResponseEntity.ok(carService.updateCarRenter(carId, clientId));
+                                                  @RequestParam(name = "clientId") Long clientId,
+                                                  @RequestParam(name = "internal", defaultValue = "false", required = false) Boolean internal) throws CarAlreadyInUseException {
+        return ResponseEntity.ok(carService.updateCarRenter(carId, clientId, internal));
     }
 
     @Operation(
@@ -140,7 +140,7 @@ public class CarController {
     @Parameter(name = "carId", description = "Car id that you want to delete")
     @DeleteMapping("/{carId}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MODERATOR')")
-    public ResponseEntity<CarDto> deleteCarById(@PathVariable(name = "carId") Long carId) throws ServiceNotFoundException, BadArgumentException {
+    public ResponseEntity<CarDto> deleteCarById(@PathVariable(name = "carId") Long carId) throws BadArgumentException, ServiceNotFoundException {
         return ResponseEntity.ok(carService.deleteCar(carId));
     }
 }

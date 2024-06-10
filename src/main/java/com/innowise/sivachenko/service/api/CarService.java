@@ -9,12 +9,12 @@ import com.innowise.sivachenko.model.enums.TransmissionType;
 import com.innowise.sivachenko.model.exception.BadArgumentException;
 import com.innowise.sivachenko.model.exception.CannotDeleteCarException;
 import com.innowise.sivachenko.model.exception.CarAlreadyInUseException;
+import com.innowise.sivachenko.model.exception.ServiceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import javax.management.ServiceNotFoundException;
 
 public interface CarService {
     Page<CarDto> getCars(
@@ -38,7 +38,7 @@ public interface CarService {
 
     CarDto updateCar(Long id, UpdateCarDto updateCarDto) throws EntityNotFoundException;
 
-    CarDto updateCarRenter(Long carId, Long clientId) throws EntityNotFoundException, CarAlreadyInUseException;
+    CarDto updateCarRenter(Long carId, Long clientId, Boolean internal) throws EntityNotFoundException, CarAlreadyInUseException;
 
-    CarDto deleteCar(Long id) throws ServiceNotFoundException, CannotDeleteCarException, BadArgumentException;
+    CarDto deleteCar(Long id) throws CannotDeleteCarException, BadArgumentException, ServiceNotFoundException;
 }
