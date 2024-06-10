@@ -7,6 +7,7 @@ import com.innowise.sivachenko.model.enums.CarBodyType;
 import com.innowise.sivachenko.model.enums.EngineType;
 import com.innowise.sivachenko.model.enums.TransmissionType;
 import com.innowise.sivachenko.model.exception.BadArgumentException;
+import com.innowise.sivachenko.model.exception.CannotDeleteCarException;
 import com.innowise.sivachenko.model.exception.CarAlreadyInUseException;
 import com.innowise.sivachenko.service.CarServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,6 +26,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.management.ServiceNotFoundException;
 
 @RestController
 @RequestMapping("/api/v1/car-service")
@@ -117,6 +120,9 @@ public class CarController {
         return ResponseEntity.ok(carService.updateCar(carId, updateCarDto));
     }
 
+    @Operation(
+            summary = "This endpoint is used for communication between microservices to change the status of the machine when creating and deleting a rent"
+    )
     @PatchMapping("/{carId}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<CarDto> updateCarRenter(@PathVariable(name = "carId") Long carId,
@@ -134,7 +140,7 @@ public class CarController {
     @Parameter(name = "carId", description = "Car id that you want to delete")
     @DeleteMapping("/{carId}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MODERATOR')")
-    public ResponseEntity<CarDto> deleteCarById(@PathVariable(name = "carId") Long carId) {
+    public ResponseEntity<CarDto> deleteCarById(@PathVariable(name = "carId") Long carId) throws ServiceNotFoundException, BadArgumentException {
         return ResponseEntity.ok(carService.deleteCar(carId));
     }
 }

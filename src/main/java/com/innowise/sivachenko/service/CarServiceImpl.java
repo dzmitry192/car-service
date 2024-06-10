@@ -1,5 +1,6 @@
 package com.innowise.sivachenko.service;
 
+import com.innowise.sivachenko.feign.RentServiceFeignClient;
 import com.innowise.sivachenko.mapper.CarMapperImpl;
 import com.innowise.sivachenko.model.dto.request.CreateCarDto;
 import com.innowise.sivachenko.model.dto.request.UpdateCarDto;
@@ -9,6 +10,7 @@ import com.innowise.sivachenko.model.enums.CarBodyType;
 import com.innowise.sivachenko.model.enums.EngineType;
 import com.innowise.sivachenko.model.enums.TransmissionType;
 import com.innowise.sivachenko.model.exception.BadArgumentException;
+import com.innowise.sivachenko.model.exception.CannotDeleteCarException;
 import com.innowise.sivachenko.model.exception.CarAlreadyInUseException;
 import com.innowise.sivachenko.repository.CarRepository;
 import com.innowise.sivachenko.service.api.CarService;
@@ -22,6 +24,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.management.ServiceNotFoundException;
 import java.util.Optional;
 
 import static com.innowise.sivachenko.service.specification.CarEntitySpecification.*;
@@ -32,6 +35,7 @@ public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
     private final CarMapperImpl carMapper;
+    private final RentServiceFeignClient rentServiceFeignClient;
 
     @Override
     public Page<CarDto> getCars(String name, Integer yearOfCar, Integer horsepower, Float engineCapacity, Short seats,
@@ -67,7 +71,6 @@ public class CarServiceImpl implements CarService {
     @Override
     public CarDto createCar(CreateCarDto createCarDto) {
         CarEntity car = carMapper.createCarDtoToCarEntity(createCarDto);
-
         return carMapper.carEntityToCarDto(carRepository.save(car));
     }
 
@@ -81,7 +84,7 @@ public class CarServiceImpl implements CarService {
         CarEntity newCar = carMapper.updateCarDtoToCarEntity(optionalCar.get(), updateCarDto);
 
         return carMapper.carEntityToCarDto(carRepository.save(newCar));
-    }
+    }   
 
     @Override
     @Transactional
@@ -101,7 +104,17 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public CarDto deleteCar(Long id) {
-        return null;
+    public CarDto deleteCar(Long carId) throws ServiceNotFoundException, BadArgumentException {
+        if (!carRepository.existsById(carId)) {
+            throw new EntityNotFoundException(String.format("Car with id {%s} not found", carId));
+        }
+        if (rentServiceFeignClient.existsActiveRent(null, carId, null)) {
+            throw new BadArgumentException(String.format("Cannot delete car with id {%s}, because there are active rents with this car", carId));
+        }
+
+        Optional<CarEntity> car = carRepository.findById(carId);
+        carRepository.delete(car.get());
+
+        return carMapper.carEntityToCarDto(car.get());
     }
 }

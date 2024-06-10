@@ -34,3 +34,8 @@ openapi:
 
 springdoc:
   show-actuator: true
+
+feign:
+  client:
+    rent-service:
+      name: rent-service

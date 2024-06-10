@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.management.ServiceNotFoundException;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -62,4 +63,12 @@ public class AdviceController {
         return new ExceptionErrorDto(e.getMessage());
     }
 
+    /**
+     * 503 (Service Unavailable)
+     */
+    @ExceptionHandler(ServiceNotFoundException.class)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ExceptionErrorDto serviceNotFoundExceptionHandler(ServiceNotFoundException e) {
+        return new ExceptionErrorDto(e.getMessage());
+    }
 }
